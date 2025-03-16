@@ -253,7 +253,7 @@ export default defineConfig({
 ```
 
 ## Commercial Usage
-This plugin is free of charge, but please consider a [donation](#) if you use it in a commercial project.
+This plugin is free of charge, but please consider a [donation](https://patreon.com/ukyo) if you use it in a commercial project.
 
 ## License
 MIT
