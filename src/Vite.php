@@ -64,21 +64,6 @@ class Vite implements Stringable
     protected string $manifest = 'manifest.json';
 
     /**
-     * The preload tag attributes.
-     */
-    protected array $preloadTagAttributesResolvers = [];
-
-    /**
-     * The script tag attributes.
-     */
-    protected array $scriptTagAttributesResolvers = [];
-
-    /**
-     * The style tag attributes.
-     */
-    protected array $styleTagAttributesResolvers = [];
-
-    /**
      * The preloaded assets.
      */
     protected array $preloadedAssets = [];
@@ -335,12 +320,7 @@ class Vite implements Stringable
             ? ['integrity' => $chunk[$this->integrity] ?? false]
             : [];
 
-        foreach (setting('vite.scriptTagAttributes') ?: [] as $resolver) {
-            if (!$resolver instanceof \Closure) {
-                continue;
-            }
-            $attributes = array_merge($attributes, $resolver($src, $url, $chunk, $manifest));
-        }
+        $attributes = array_merge($attributes, $this->attributesResolver('scriptTagAttributes', $src, $url, $chunk, $manifest));
 
         return $attributes;
     }
@@ -354,10 +334,7 @@ class Vite implements Stringable
             ? ['integrity' => $chunk[$this->integrity] ?? false]
             : [];
 
-        foreach (setting('vite.styleTagAttributes') ?: [] as $resolver) {
-            $attributes = array_merge($attributes, $resolver($src, $url, $chunk, $manifest));
-        }
-
+        $attributes = array_merge($attributes, $this->attributesResolver('styleTagAttributes', $src, $url, $chunk, $manifest));
         return $attributes;
     }
 
@@ -383,10 +360,20 @@ class Vite implements Stringable
             ? array_merge($attributes, ['integrity' => $chunk[$this->integrity] ?? false])
             : $attributes;
 
-        foreach ($this->preloadTagAttributesResolvers as $resolver) {
+        $attributes = array_merge($this->attributesResolver('preloadTagAttributes', $src, $url, $chunk, $manifest));
+
+        return $attributes;
+    }
+
+    protected function attributesResolver(string $name, string $src, string $url, array $chunk = [], array $manifest = [])
+    {
+        $attributes = [];
+        foreach (setting("vite.{$name}") ?: [] as $resolver) {
+            if (!$resolver instanceof \Closure) {
+                continue;
+            }
             $attributes = array_merge($attributes, $resolver($src, $url, $chunk, $manifest));
         }
-
         return $attributes;
     }
 
@@ -595,7 +582,7 @@ class Vite implements Stringable
             $attributes = fn() => $attributes;
         }
 
-        $this->scriptTagAttributesResolvers[] = $attributes;
+        setting('vite.scriptTagAttributes', array_merge(setting('vite.scriptTagAttributes') ?: [], $attributes));
 
         return $this;
     }
@@ -609,7 +596,7 @@ class Vite implements Stringable
             $attributes = fn() => $attributes;
         }
 
-        $this->styleTagAttributesResolvers[] = $attributes;
+        setting('vite.styleTagAttributes', array_merge(setting('vite.styleTagAttributes') ?: [], $attributes));
         return $this;
     }
 
@@ -622,7 +609,7 @@ class Vite implements Stringable
             $attributes = fn() => $attributes;
         }
 
-        $this->preloadTagAttributesResolvers[] = $attributes;
+        setting('vite.preloadTagAttributes', array_merge(setting('vite.preloadTagAttributes') ?: [], $attributes));
 
         return $this;
     }
