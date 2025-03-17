@@ -1,0 +1,19 @@
+{
+    "name": "trk/processwire-vite",
+    "description": "Vite adapter for ProcessWire",
+    "type": "pw-module",
+    "keywords": ["processwire", "vite", "adapter"],
+    "homepage": "https://github.com/trk/processwire-vite",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Iskender TOTOGLU",
+            "email": "iskender@totoglu.com",
+            "homepage": "https://totoglu.com/"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "hari/pw-module": "~1.0"
+    }
+}
