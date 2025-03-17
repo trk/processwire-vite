@@ -653,7 +653,7 @@ class Vite implements Stringable
 
     public function url(?string $path = null): string
     {
-        return ltrim($this->rootUrl, '/') . ltrim($path, '/');
+        return $this->rootUrl . ltrim($path, '/');
     }
 
     protected function path(?string $file = null, ?string $path = null): string
