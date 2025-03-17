@@ -260,6 +260,7 @@ MIT
 
 ## Credits
 - [Iskender TOTOGLU](https://github.com/trk)
+- [Lukas Kleinschmidt](https://github.com/lukasklei)
 - [The Laravel Framework](https://github.com/laravel)
 
 > A good portion of the documentation has been copied from the [Laravel website](https://laravel.com/docs/vite) and adapted to the ProcessWire implementation.
