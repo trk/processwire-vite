@@ -360,7 +360,7 @@ class Vite implements Stringable
             ? array_merge($attributes, ['integrity' => $chunk[$this->integrity] ?? false])
             : $attributes;
 
-        $attributes = array_merge($this->attributesResolver('preloadTagAttributes', $src, $url, $chunk, $manifest));
+        $attributes = array_merge($attributes, $this->attributesResolver('preloadTagAttributes', $src, $url, $chunk, $manifest));
 
         return $attributes;
     }
